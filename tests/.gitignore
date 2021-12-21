@@ -1,0 +1,34 @@
+# Binary files
+*.exe
+tests
+
+
+# Temp files
+*.*~
+
+# fucking cmake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+[Dd]ebug/
+[Rr]elease/
+[Bb]uild/
+MinSizeRel/
+RelWithDebInfo/
+
+# gcc asm files
+*.s
+*.S
+
+
+# Files that we don't want to ignore
+!.gitignore
