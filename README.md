@@ -108,7 +108,17 @@ int main()
 }
 ```
 
+For a more detailed description, see the [API documentation](doc/API.md).
 
+
+## Tests
+
+```
+cd tests
+cmake . -B ./build
+cd build
+make
+```
 
 
 ## License
