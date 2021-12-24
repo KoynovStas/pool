@@ -227,6 +227,8 @@ By default, all flags are zero, but for static pools destructor is not generated
 
 ## Notes
 
+#### General
+
 For embedded systems, it makes sense to choose Static Pool, since most embedded systems don't have a memory manager.
 If you only need basic functions (`create`/`destroy`) the `list` algorithm is the best choice because it is the fastest (we only work with one pointer).
 If full functionality is required, the `dlist` algorithm is the best choice.
@@ -234,3 +236,16 @@ The `bitset` algorithm is a trade-off between `list` and `dlist`.
 If you have chosen a dynamic pool, it is advisable to use the `reserve` method.
 If the objects stored in the pool are small enough, it may make sense to use block allocation of nodes.
 This will reduce the load on the memory manager.
+
+
+#### Align
+
+Pool allows you to set the required alignment of data(objects), through the template parameter `Align`.
+By default, it is equal to `alignof(T)`.
+But in some cases, when working with hardware(DSP, DMA...) or SIMD (SSE, AVX, Neon...), a certain alignment is required, which you can set through the template parameter.
+Pool(Dynamic) uses standard C++17 language features that allow you to use the [new operator with support alignment](https://en.cppreference.com/w/cpp/memory/new/operator_new) for allocate `nodes`.
+However, some compilers may require additional flags to support this feature.
+For example [GCC version 7.x](https://gcc.gnu.org/gcc-7/changes.html) requires the flag: `-faligned-new=8` (for 32x bits).
+Description of the flag on the [gcc website.](https://gcc.gnu.org/onlinedocs/gcc-11.2.0/gcc/C_002b_002b-Dialect-Options.html#C_002b_002b-Dialect-Options)
+See an example of errors: [Default new alignment.](https://stackoverflow.com/questions/58860151/default-new-alignment)
+For other compilers, check its documentation.

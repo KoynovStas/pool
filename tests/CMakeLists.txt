@@ -22,6 +22,17 @@ else()
 endif()
 
 
+# C++17 support for new of over-aligned types in GCC(since 7.x)
+# can be enabled with the -faligned-new flag.
+# This flag is enabled by default for -std=c++17.
+# But gcc(mingw) version 7.х require this flag to be enabled manually.
+# For other compilers, check its documentation.
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8)
+        add_compile_options(-faligned-new=8 -Waligned-new)
+    endif()
+endif()
+
 
 message("-- Generator is set to: ${CMAKE_GENERATOR}")
 

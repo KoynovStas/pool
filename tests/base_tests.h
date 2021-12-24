@@ -14,7 +14,7 @@ using namespace pool;
 
 
 #define TEST_ALIGN(T, N, Align) {                      \
-    Pool<T, N, Align, 0, IMPL> pool;                   \
+    static Pool<T, N, Align, 0, IMPL> pool;            \
     for(int i = 0; i < N; i++){                        \
         T* x = pool.create(Align);                     \
         TEST_ASSERT2(x != nullptr, "Can't create");    \
