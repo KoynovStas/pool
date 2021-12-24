@@ -162,6 +162,7 @@ template <typename     T,
 class Pool_base
 {
     static_assert(Align > 0, "Align == 0 is not support");
+    static_assert(Align >= alignof(T), "Align can't be less than the requirements of the type");
 
     public:
         using value_type      = T;
