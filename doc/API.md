@@ -3,7 +3,7 @@
 
 ## Description
 
-`Pool` is C++17 object pool template with different implementations(algorithms)
+`Pool` is C++17 object(memory) pool template with different implementations(algorithms)
 
 
 **Template Pool has the following parameters:**
@@ -121,8 +121,8 @@ iterator destroy(const_iterator pos) noexcept                        //2
 iterator destroy(const_iterator first, const_iterator last) noexcept //3
 ```
 
-Destroys the specified object in the pool. The memory is occupied by the object remains
-in the pool and is ready to create a new element(object).
+Destroys the specified object in the pool(will call the destructor for the object).
+The memory is occupied by the object remains in the pool and is ready to create a new element(object).
 
 1) Destroys the `obj`.
 2) Destroys the object at `pos`.
