@@ -17,7 +17,7 @@ I use this pool as a memory manager(heap) for a specific type of objects.
  - Header-only
  - Supported a different implementations(algorithms) see below
  - O(1) create/destroy of objects
- - Supported alignment of objects via use of [aligned_storage](https://en.cppreference.com/w/cpp/types/aligned_storage)
+ - Supported alignment of objects via use of [alignas](https://en.cppreference.com/w/cpp/language/alignas)
  - Some algorithms provide [iterator](https://devdocs.io/cpp/iterator) support
 
 

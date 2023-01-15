@@ -691,7 +691,7 @@ class Pool_dlist_base
 
 
     protected:
-        using Data = std::aligned_storage_t<sizeof(T), Align>;
+        using Data = struct { alignas(Align) std::byte data[sizeof(T)]; };
 
         struct Node {
             union {
@@ -703,6 +703,7 @@ class Pool_dlist_base
 
         Node       *m_free_nodes{nullptr};
         dlist_head  m_used_nodes;
+
 
         template <typename... Args>
         T* create_obj(Args&&... args) noexcept(is_nothrow_create<T, Args...>)
@@ -735,8 +736,8 @@ class Pool_dlist_base
             return (Node *)((char *)obj - offsetof(Node, data));
         }
 
-        static constexpr Data* get_data(const dlist_head* head) noexcept {
-            return (Data*)((char *)head + offsetof(Node, data));
+        static constexpr void* get_data(const dlist_head* head) noexcept {
+            return ((char *)head + offsetof(Node, data));
         }
 
         constexpr Node* top_free_node()    noexcept { return m_free_nodes;   }
@@ -817,7 +818,7 @@ class Pool_list_base
 
 
     protected:
-        using Data = std::aligned_storage_t<sizeof(T), Align>;
+        using Data = struct { alignas(Align) std::byte data[sizeof(T)]; };
 
         union Node {
             Node* next;
