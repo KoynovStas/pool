@@ -28,14 +28,14 @@ template <T, N, Align = alignof(T), Flags = 0, Impl = Pool_dlist>
 |------------------|------------|------
 |SPool_list        | SP_l       | Based on a singly-linked list
 |SPool_list_bitset | SP_b       | Analogue of SPool_list, but we use [bitset](http://en.cppreference.com/w/cpp/utility/bitset) for the used nodes
-|SPool_dlist       | SP_dl      | Based on a nested circular doubly-linked list
+|SPool_dlist       | SP_dl      | Based on an intrusive(nested) circular doubly-linked list
 
 
 **Dynamic:**
 | Name            | Short name | Info
 |-----------------|------------|------
 |Pool_list        | P_l        | Based on a singly-linked list
-|Pool_dlist       | P_dl       | Based on a nested circular doubly-linked list
+|Pool_dlist       | P_dl       | Based on an intrusive(nested) circular doubly-linked list
 |Pool_list_block  | P_lb       | Analogue of Pool_list, but memory is allocated in blocks of N nodes
 |Pool_dlist_block | P_dlb      | Analogue of Pool_dlist, but memory is allocated in blocks of N nodes
 
@@ -56,9 +56,13 @@ All basic methods have complexity is O(1)!
 | reserve      |   -   |   -  |   -   | O(N) | O(N) | O(N) | O(N)
 | shrink_to_fit|   -   |   -  |   -   | O(N) | O(N) | O(N) | O(N)
 | constructor  | O(N)  | O(N) | O(N)  | O(1) | O(1) | O(1) | O(1)
-| destructor   | O(N^2)| O(N) | O(N)  | O(N) | O(N) | O(N) | O(N)
+| destructor   | O(N^2)| O(N) | O(N)  | O(N)*| O(N) | O(N)*| O(N)
 | iterator     |   -   | Bid  | Bid   |  -   | Bid  |  -   | Bid
 
+> Note:
+> **\*** Pools `P_l`, `P_lb` don't store information about the nodes used.
+Therefore, the user must ensure that all objects was be destroyed when
+the destructor is called. Otherwise, it can lead to a memory leak.
 
 ---
 Most of the basic methods are trivial and need not be described:
@@ -97,7 +101,7 @@ T* create(Args&&... args)
 ```
 
 Create an item(object) in the pool and returns a pointer to it.
-For an object, its constructor is called with arguments Args.
+For an object, its constructor is called with arguments `Args`.
 If the pool has no free items then a `nullptr` is returned.
 
 For dynamic pool, method `create()` add a new node if there is no free one.

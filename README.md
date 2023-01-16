@@ -44,14 +44,14 @@ template <T, N, Align = alignof(T), Flags = 0, Impl = Pool_dlist>
 |------------------|------
 |SPool_list        | Based on a singly-linked list
 |SPool_list_bitset | Analogue of SPool_list, but we use bitset for the used nodes
-|SPool_dlist       | Based on a nested circular doubly-linked list
+|SPool_dlist       | Based on an intrusive(nested) circular doubly-linked list
 
 
 **Dynamic:**
 | Name            | Info
 |-----------------|------
 |Pool_list        | Based on a singly-linked list
-|Pool_dlist       | Based on a nested circular doubly-linked list
+|Pool_dlist       | Based on an intrusive(nested) circular doubly-linked list
 |Pool_list_block  | Analogue of Pool_list, but memory is allocated in blocks of N nodes
 |Pool_dlist_block | Analogue of Pool_dlist, but memory is allocated in blocks of N nodes
 
