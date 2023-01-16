@@ -15,12 +15,16 @@ using namespace pool;
 
 #define TEST_ALIGN(T, N, Align) {                      \
     static Pool<T, N, Align, 0, IMPL> pool;            \
+    std::array<T*, N> items;                           \
     for(int i = 0; i < N; i++){                        \
         T* x = pool.create(Align);                     \
+        items[i] = x;                                  \
         TEST_ASSERT2(x != nullptr, "Can't create");    \
         TEST_ASSERT2(*x == Align,  "Bad init");        \
         TEST_ASSERT2(pool.ALIGN == Align, "Bad const");\
-        TEST_ASSERT2((std::uintptr_t)(x)%Align == 0, "Bad align"); } }
+        TEST_ASSERT2((std::uintptr_t)(x)%Align == 0, "Bad align"); }\
+    for(auto item: items) pool.destroy(item); }
+
 
 
 TEST(test_pool_align)
