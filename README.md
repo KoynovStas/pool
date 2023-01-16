@@ -118,13 +118,20 @@ int main()
 For a more detailed description, see the [API documentation](doc/API.md).
 
 
+
 ## Tests
+
+To run tests, perform the following steps:
 
 ```
 cd tests
 cmake . -B ./build
-cd build
-make
+cmake --build build
+```
+
+On Windows for MinGW you can generate `MinGW Makefiles`:
+```
+cmake . -B ./build -G "MinGW Makefiles"
 ```
 
 
