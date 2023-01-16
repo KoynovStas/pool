@@ -271,6 +271,14 @@ TEST(ex_test_pool_reserve)
     TEST_ASSERT(pool.empty()    == false);
     TEST_ASSERT(pool.full()     == false);
 
+    pool.destroy(i);
+    pool.destroy(i2);
+    TEST_ASSERT(pool.size()     == 0);
+    TEST_ASSERT(pool.capacity() == 4);
+    TEST_ASSERT(pool.empty()    == true);
+    TEST_ASSERT(pool.full()     == false);
+
+
     TEST_PASS(nullptr);
 }
 
