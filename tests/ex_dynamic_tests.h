@@ -563,6 +563,15 @@ TEST(ex_test_pool_move)
     TEST_ASSERT(pool3.empty()    == false);
     TEST_ASSERT(pool3.full()     == true);
 
+    pool3.destroy(i);
+    pool3.destroy(i2);
+
+    TEST_ASSERT(pool3.size()     == 0);
+    TEST_ASSERT(pool3.capacity() == 2);
+    TEST_ASSERT(pool3.empty()    == true);
+    TEST_ASSERT(pool3.full()     == false);
+
+
     TEST_PASS(nullptr);
 }
 
@@ -610,6 +619,15 @@ TEST(ex_test_pool_swap)
     TEST_ASSERT(pool.capacity() == 2);
     TEST_ASSERT(pool.empty()    == false);
     TEST_ASSERT(pool.full()     == true);
+
+    pool.destroy(i);
+    pool.destroy(i2);
+
+    TEST_ASSERT(pool.size()     == 0);
+    TEST_ASSERT(pool.capacity() == 2);
+    TEST_ASSERT(pool.empty()    == true);
+    TEST_ASSERT(pool.full()     == false);
+
 
     TEST_PASS(nullptr);
 }
