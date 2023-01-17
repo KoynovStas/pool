@@ -254,6 +254,7 @@ TEST(test_pool_struct)
 
 
 
+[[maybe_unused]]
 TEST(test_pool_dtor_off_struct)
 {
     TEST_ASSERT(Temp_struct::cnt == 0);
@@ -296,7 +297,9 @@ static stest_func base_tests[] =
     test_pool_create,
     test_pool_destroy,
     test_pool_struct,
+    #ifdef RUN_DTOR_OFF_TESTS
     test_pool_dtor_off_struct,
+    #endif
 };
 
 

@@ -34,31 +34,43 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 endif()
 
 
-message("-- Generator is set to: ${CMAKE_GENERATOR}")
+# Enables all tests to test of POOL_DTOR_OFF tuning flag.
+# These tests will leak memory! You need to understand
+# how this feature works and what it is for!
+# cmake -DRUN_DTOR_OFF_TESTS=ON
+if(RUN_DTOR_OFF_TESTS)
+    message(WARNING "Enabled tests for testing POOL_DTOR_OFF tuning flag! (There will be a memory leak!)")
+    add_compile_definitions(RUN_DTOR_OFF_TESTS)
+endif()
+
+
+message(STATUS "Generator is set to: ${CMAKE_GENERATOR}")
 
 
 
 set(INCLUDE_DIR ${PROJECT_SOURCE_DIR}/../src)
 
 
-set(SOURCES main.cpp
-            test_spool_list.cpp
-            test_spool_list_bitset.cpp
-            test_spool_dlist.cpp
-            test_pool_list.cpp
-            test_pool_list_block.cpp
-            test_pool_dlist.cpp
-            test_pool_dlist_block.cpp
-            )
+set(SOURCES
+    main.cpp
+    test_spool_list.cpp
+    test_spool_list_bitset.cpp
+    test_spool_dlist.cpp
+    test_pool_list.cpp
+    test_pool_list_block.cpp
+    test_pool_dlist.cpp
+    test_pool_dlist_block.cpp
+)
 
-set(HEADERS stest.h
-            helpers.h
-            base_tests.h
-            ex_tests.h
-            ex_dynamic_tests.h
-            iterator_tests.h
-            ${INCLUDE_DIR}/pool.h
-            )
+set(HEADERS
+    stest.h
+    helpers.h
+    base_tests.h
+    ex_tests.h
+    ex_dynamic_tests.h
+    iterator_tests.h
+    ${INCLUDE_DIR}/pool.h
+)
 
 add_executable(tests ${SOURCES} ${HEADERS})
 
