@@ -44,6 +44,14 @@ if(RUN_DTOR_OFF_TESTS)
 endif()
 
 
+# Enable ASan
+# cmake -DUSE_ASAN=ON
+if(USE_ASAN AND NOT MINGW) #ASan dont work in MinGW
+    message(STATUS "Enabled Address Sanitizer (ASan) USE_ASAN is set to: ${USE_ASAN}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+endif()
+
+
 message(STATUS "Generator is set to: ${CMAKE_GENERATOR}")
 
 
