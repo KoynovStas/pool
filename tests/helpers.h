@@ -25,7 +25,7 @@ struct Temp_struct
         cnt--;
 //        std::cout << "destr " << tag << "\n";
     }
-    static int cnt;
+    static inline int cnt = 0;
     int tag;
 };
 
