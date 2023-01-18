@@ -43,35 +43,6 @@ TEST(test_pool_dtor_auto)
 
 
 
-TEST(test_pool_dtor_off)
-{
-    TEST_ASSERT(Temp_struct::cnt == 0);
-
-    {
-        Pool<Temp_struct, 4, 16, POOL_DTOR_OFF, IMPL> pool;
-
-        Temp_struct* t1 = pool.create(1);
-
-        TEST_ASSERT(t1 != nullptr);
-        TEST_ASSERT(t1->tag == 1);
-        TEST_ASSERT(t1->cnt == 1);
-
-        Temp_struct* t2 = pool.create(2);
-
-        TEST_ASSERT(t2 != nullptr);
-        TEST_ASSERT(t2->tag == 2);
-        TEST_ASSERT(t1->tag == 1);
-        TEST_ASSERT(t1->cnt == 2);
-        TEST_ASSERT(t2->cnt == 2);
-    } //no destructor for pool
-
-    TEST_ASSERT(Temp_struct::cnt == 2);
-
-    TEST_PASS(nullptr);
-}
-
-
-
 TEST(test_pool_destroy_all)
 {
     const size_t N = 10;
@@ -117,6 +88,37 @@ TEST(test_pool_destroy_all)
 
 
 
+[[maybe_unused]]
+TEST(test_pool_dtor_off)
+{
+    TEST_ASSERT(Temp_struct::cnt == 0);
+
+    {
+        Pool<Temp_struct, 4, 16, POOL_DTOR_OFF, IMPL> pool;
+
+        Temp_struct* t1 = pool.create(1);
+
+        TEST_ASSERT(t1 != nullptr);
+        TEST_ASSERT(t1->tag == 1);
+        TEST_ASSERT(t1->cnt == 1);
+
+        Temp_struct* t2 = pool.create(2);
+
+        TEST_ASSERT(t2 != nullptr);
+        TEST_ASSERT(t2->tag == 2);
+        TEST_ASSERT(t1->tag == 1);
+        TEST_ASSERT(t1->cnt == 2);
+        TEST_ASSERT(t2->cnt == 2);
+    } //no destructor for pool
+
+    TEST_ASSERT(Temp_struct::cnt == 2);
+
+    TEST_PASS(nullptr);
+}
+
+
+
+[[maybe_unused]]
 TEST(test_pool_dtor_off_destroy_all)
 {
     const size_t N = 10;
@@ -210,9 +212,11 @@ TEST(test_pool_for_each)
 static stest_func ex_tests[] =
 {
     test_pool_dtor_auto,
-    test_pool_dtor_off,
     test_pool_destroy_all,
+    #ifdef RUN_DTOR_OFF_TESTS
+    test_pool_dtor_off,
     test_pool_dtor_off_destroy_all,
+    #endif
     test_pool_for_each,
 };
 

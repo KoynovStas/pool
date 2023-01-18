@@ -15,12 +15,16 @@ using namespace pool;
 
 #define TEST_ALIGN(T, N, Align) {                      \
     static Pool<T, N, Align, 0, IMPL> pool;            \
+    std::array<T*, N> items;                           \
     for(int i = 0; i < N; i++){                        \
         T* x = pool.create(Align);                     \
+        items[i] = x;                                  \
         TEST_ASSERT2(x != nullptr, "Can't create");    \
         TEST_ASSERT2(*x == Align,  "Bad init");        \
         TEST_ASSERT2(pool.ALIGN == Align, "Bad const");\
-        TEST_ASSERT2((std::uintptr_t)(x)%Align == 0, "Bad align"); } }
+        TEST_ASSERT2((std::uintptr_t)(x)%Align == 0, "Bad align"); }\
+    for(auto item: items) pool.destroy(item); }
+
 
 
 TEST(test_pool_align)
@@ -250,6 +254,7 @@ TEST(test_pool_struct)
 
 
 
+[[maybe_unused]]
 TEST(test_pool_dtor_off_struct)
 {
     TEST_ASSERT(Temp_struct::cnt == 0);
@@ -292,7 +297,9 @@ static stest_func base_tests[] =
     test_pool_create,
     test_pool_destroy,
     test_pool_struct,
+    #ifdef RUN_DTOR_OFF_TESTS
     test_pool_dtor_off_struct,
+    #endif
 };
 
 

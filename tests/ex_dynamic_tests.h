@@ -188,10 +188,8 @@ TEST(ex_test_pool_create_except)
 TEST(ex_test_pool_create_except2) //fixed capacity
 {
     const size_t N  = 10;
-    const size_t N2 = N*2;
     DECLARE_POOL(pool, int, N, 16, POOL_CREATE_EXCEPTION | POOL_FIXED_CAPACITY);
-
-    std::array<int*, N2> pint;
+    std::array<int*, N+1> pint;
 
     TEST_ASSERT(pool.capacity() == N);
 
@@ -211,12 +209,21 @@ TEST(ex_test_pool_create_except2) //fixed capacity
     }
 
 
+    TEST_ASSERT(pool.size() == N);
+
+
     try
     {
-        pint[0] = pool.create(123);
+        pint[N] = pool.create(123);
     }
     catch(const std::bad_alloc&)
     {
+        //free memory
+        for(size_t i = 0; i < N; i++)
+        {
+            pool.destroy(pint[i]);
+        }
+
         TEST_PASS(nullptr);
     }
     catch(...)
@@ -270,6 +277,14 @@ TEST(ex_test_pool_reserve)
     TEST_ASSERT(pool.capacity() == 4);
     TEST_ASSERT(pool.empty()    == false);
     TEST_ASSERT(pool.full()     == false);
+
+    pool.destroy(i);
+    pool.destroy(i2);
+    TEST_ASSERT(pool.size()     == 0);
+    TEST_ASSERT(pool.capacity() == 4);
+    TEST_ASSERT(pool.empty()    == true);
+    TEST_ASSERT(pool.full()     == false);
+
 
     TEST_PASS(nullptr);
 }
@@ -563,6 +578,15 @@ TEST(ex_test_pool_move)
     TEST_ASSERT(pool3.empty()    == false);
     TEST_ASSERT(pool3.full()     == true);
 
+    pool3.destroy(i);
+    pool3.destroy(i2);
+
+    TEST_ASSERT(pool3.size()     == 0);
+    TEST_ASSERT(pool3.capacity() == 2);
+    TEST_ASSERT(pool3.empty()    == true);
+    TEST_ASSERT(pool3.full()     == false);
+
+
     TEST_PASS(nullptr);
 }
 
@@ -610,6 +634,15 @@ TEST(ex_test_pool_swap)
     TEST_ASSERT(pool.capacity() == 2);
     TEST_ASSERT(pool.empty()    == false);
     TEST_ASSERT(pool.full()     == true);
+
+    pool.destroy(i);
+    pool.destroy(i2);
+
+    TEST_ASSERT(pool.size()     == 0);
+    TEST_ASSERT(pool.capacity() == 2);
+    TEST_ASSERT(pool.empty()    == true);
+    TEST_ASSERT(pool.full()     == false);
+
 
     TEST_PASS(nullptr);
 }
