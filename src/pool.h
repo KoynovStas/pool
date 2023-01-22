@@ -1,5 +1,8 @@
 /*
  *
+ * version 1.0
+ *
+ *
  * BSD 3-Clause License
  *
  * Copyright (c) 2021, Koynov Stas - skojnov@yandex.ru
